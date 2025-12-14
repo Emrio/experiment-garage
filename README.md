@@ -7,31 +7,33 @@
 ```sh
 docker compose up -d
 
+docker exec -ti experiment-garage-s3-host1-1 /garage node id
 docker exec -ti experiment-garage-s3-host2-1 /garage node id
 docker exec -ti experiment-garage-s3-host3-1 /garage node id
 docker exec -ti experiment-garage-s3-host4-1 /garage node id
-# update host1/garage.toml with the above peer IDs and IPs, then restart host1
-docker compose restart host1
 ```
+
+Next, either configure `bootstrap_peers` in one of the peers and restart that peer, or connect the hosts from the web UI.
+
+![WebUI cluster initial view](./webui-cluster-init.png)
 
 ## Example layout configuration
 
-> Also doable via the web UI
+> Also doable (and easier) via the web UI
 
 You must adapt `f780`, `a267`, `889c`, and `1482`
 
 ```sh
-alias garage="docker exec -ti experiment-garage-s3-host1-1 /garage"
+alias garage="docker exec -ti experiment-garage-s3-gateway-1 /garage"
 garage status
-garage layout assign f780 -z zone1 -c 3G -t host1
-garage layout assign a267 -z zone1 -c 3G -t host2
-garage layout assign 889c -z zone2 -c 5G -t giraffe
-garage layout assign 1482 -z zone3 -c 5G -t squirrel
+garage layout assign f780 -z zone1 -c 3G
+garage layout assign a267 -z zone1 -c 3G
+garage layout assign 889c -z zone2 -c 5G
+garage layout assign 1482 -z zone3 -c 5G
+garage layout assign ce71 -z zone4 --gateway
 garage layout show
 garage layout apply --version 1
 ```
-
-In this screenshot, the gateway's layout is configured as a "gateway". This was done via the web UI.
 
 ![WebUI cluster layout example](./webui-cluster-layout.png)
 
