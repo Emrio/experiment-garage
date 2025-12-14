@@ -8,12 +8,13 @@ replication_factor = 3
 compression_level = 2
 
 rpc_bind_addr = "[::]:3901"
-# rpc_public_addr = "[2001:db8::42:1]:3901"
+
+# bootstrap_peers = [
+# ]
 
 [s3_api]
 s3_region = "garage"
-# api_bind_addr = "[::]:3900"
-# root_domain = ".s3.emrio.fr"
+api_bind_addr = "[::]:3900"
 
 [admin]
 api_bind_addr = "[::]:3903"

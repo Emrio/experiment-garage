@@ -7,10 +7,11 @@
 ```sh
 docker compose up -d
 
-docker exec -ti experiment-garage-s3-host1-1 /garage node id
-docker exec -ti experiment-garage-s3-host2-1 /garage node id
-docker exec -ti experiment-garage-s3-host3-1 /garage node id
-docker exec -ti experiment-garage-s3-host4-1 /garage node id
+docker exec -ti storage-node1 /garage node id
+docker exec -ti storage-node2 /garage node id
+docker exec -ti storage-node3 /garage node id
+docker exec -ti storage-node4 /garage node id
+docker exec -ti regular-gateway /garage node id
 ```
 
 Next, either configure `bootstrap_peers` in one of the peers and restart that peer, or connect the hosts from the web UI.
@@ -21,16 +22,17 @@ Next, either configure `bootstrap_peers` in one of the peers and restart that pe
 
 > Also doable (and easier) via the web UI
 
-You must adapt `f780`, `a267`, `889c`, and `1482`
+You must adapt `aaaa` to your node IDs.
 
 ```sh
-alias garage="docker exec -ti experiment-garage-s3-gateway-1 /garage"
+alias garage="docker exec -ti storage-node1 /garage node id"
 garage status
-garage layout assign f780 -z zone1 -c 3G
-garage layout assign a267 -z zone1 -c 3G
-garage layout assign 889c -z zone2 -c 5G
-garage layout assign 1482 -z zone3 -c 5G
-garage layout assign ce71 -z zone4 --gateway
+garage layout assign aaaa -z zone1 --gateway
+garage layout assign aaaa -z zone2 --gateway
+garage layout assign aaaa -z zone2 -c 5G
+garage layout assign aaaa -z zone3 -c 3G
+garage layout assign aaaa -z zone3 -c 3G
+garage layout assign aaaa -z zone4 -c 5G
 garage layout show
 garage layout apply --version 1
 ```
@@ -67,3 +69,7 @@ Apps can access the S3 in three ways:
   - two goals:
     - easier to identify nodes when configuring the cluster, either on `bootstrap_peers` or on the webUI
     - easier to identify nodes for monitoring in prometheus
+
+## Notes
+
+- `replication_factor` in `garage.toml` must be the same on all nodes : https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#replication_factor
