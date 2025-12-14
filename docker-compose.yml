@@ -16,8 +16,8 @@ services:
     image: dxflrs/garage:v2.1.0
     volumes:
       - ./gateway/garage.toml:/etc/garage.toml
-      - ./gateway/meta:/var/lib/garage/meta
-      - ./gateway/data:/var/lib/garage/data
+      - gateway-meta:/var/lib/garage/meta
+      - gateway-data:/var/lib/garage/data
     environment:
       GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
       GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
@@ -33,8 +33,8 @@ services:
     image: dxflrs/garage:v2.1.0
     volumes:
       - ./host1/garage.toml:/etc/garage.toml
-      - ./host1/meta:/var/lib/garage/meta
-      - ./host1/data:/var/lib/garage/data
+      - host1-meta:/var/lib/garage/meta
+      - host1-data:/var/lib/garage/data
     environment:
       GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
       # GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
@@ -47,8 +47,8 @@ services:
     image: dxflrs/garage:v2.1.0
     volumes:
       - ./host2/garage.toml:/etc/garage.toml
-      - ./host2/meta:/var/lib/garage/meta
-      - ./host2/data:/var/lib/garage/data
+      - host2-meta:/var/lib/garage/meta
+      - host2-data:/var/lib/garage/data
     environment:
       GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
       # GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
@@ -61,8 +61,8 @@ services:
     image: dxflrs/garage:v2.1.0
     volumes:
       - ./host3/garage.toml:/etc/garage.toml
-      - ./host3/meta:/var/lib/garage/meta
-      - ./host3/data:/var/lib/garage/data
+      - host3-meta:/var/lib/garage/meta
+      - host3-data:/var/lib/garage/data
     environment:
       GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
       # GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
@@ -75,8 +75,8 @@ services:
     image: dxflrs/garage:v2.1.0
     volumes:
       - ./host4/garage.toml:/etc/garage.toml
-      - ./host4/meta:/var/lib/garage/meta
-      - ./host4/data:/var/lib/garage/data
+      - host4-meta:/var/lib/garage/meta
+      - host4-data:/var/lib/garage/data
     environment:
       GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
       # GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
@@ -95,3 +95,15 @@ networks:
       config:
         - subnet: 2001:db8::/64
         - subnet: 10.42.0.0/16
+
+volumes:
+  host1-data:
+  host1-meta:
+  host2-data:
+  host2-meta:
+  host3-data:
+  host3-meta:
+  host4-data:
+  host4-meta:
+  gateway-data:
+  gateway-meta:
