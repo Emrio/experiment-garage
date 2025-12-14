@@ -1,0 +1,97 @@
+services:
+  webui:
+    image: khairul169/garage-webui:1.1.0
+    ports:
+      - 3909:3909
+    environment:
+      API_BASE_URL: "http://s3-gateway:3903"
+      S3_ENDPOINT_URL: "http://s3-gateway:3900"
+      API_ADMIN_KEY: ${GARAGE_ADMIN_TOKEN}
+    networks:
+      garage-net:
+    depends_on:
+      - s3-gateway
+
+  s3-gateway:
+    image: dxflrs/garage:v2.1.0
+    volumes:
+      - ./gateway/garage.toml:/etc/garage.toml
+      - ./gateway/meta:/var/lib/garage/meta
+      - ./gateway/data:/var/lib/garage/data
+    environment:
+      GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
+      GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
+      GARAGE_METRICS_TOKEN: ${GARAGE_METRICS_TOKEN}
+    networks:
+      garage-net:
+        ipv6_address: 2001:db8::43:2
+
+  # Each storage node could run on a different physical host or VM.
+  # The important part is that they can reach each other via their IPv6 addresses.
+
+  s3-host1:
+    image: dxflrs/garage:v2.1.0
+    volumes:
+      - ./host1/garage.toml:/etc/garage.toml
+      - ./host1/meta:/var/lib/garage/meta
+      - ./host1/data:/var/lib/garage/data
+    environment:
+      GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
+      # GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
+      GARAGE_METRICS_TOKEN: ${GARAGE_METRICS_TOKEN}
+    networks:
+      garage-net:
+        ipv6_address: 2001:db8::42:1
+
+  s3-host2:
+    image: dxflrs/garage:v2.1.0
+    volumes:
+      - ./host2/garage.toml:/etc/garage.toml
+      - ./host2/meta:/var/lib/garage/meta
+      - ./host2/data:/var/lib/garage/data
+    environment:
+      GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
+      # GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
+      GARAGE_METRICS_TOKEN: ${GARAGE_METRICS_TOKEN}
+    networks:
+      garage-net:
+        ipv6_address: 2001:db8::42:2
+
+  s3-host3:
+    image: dxflrs/garage:v2.1.0
+    volumes:
+      - ./host3/garage.toml:/etc/garage.toml
+      - ./host3/meta:/var/lib/garage/meta
+      - ./host3/data:/var/lib/garage/data
+    environment:
+      GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
+      # GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
+      GARAGE_METRICS_TOKEN: ${GARAGE_METRICS_TOKEN}
+    networks:
+      garage-net:
+        ipv6_address: 2001:db8::42:3
+
+  s3-host4:
+    image: dxflrs/garage:v2.1.0
+    volumes:
+      - ./host4/garage.toml:/etc/garage.toml
+      - ./host4/meta:/var/lib/garage/meta
+      - ./host4/data:/var/lib/garage/data
+    environment:
+      GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
+      # GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
+      GARAGE_METRICS_TOKEN: ${GARAGE_METRICS_TOKEN}
+    networks:
+      garage-net:
+        ipv6_address: 2001:db8::42:4
+
+networks:
+  garage-net:
+    driver: bridge
+    enable_ipv4: true
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 2001:db8::/64
+        - subnet: 10.42.0.0/16

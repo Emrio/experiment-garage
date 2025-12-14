@@ -1,0 +1,27 @@
+metadata_dir = "/var/lib/garage/meta"
+data_dir = "/var/lib/garage/data"
+db_engine = "lmdb"
+metadata_auto_snapshot_interval = "6h"
+
+replication_factor = 3
+
+compression_level = 2
+
+rpc_bind_addr = "[::]:3901"
+rpc_public_addr = "[2001:db8::42:1]:3901"
+
+bootstrap_peers = [
+  "a2679d62ae59073d071d4cbc5fc5579ad27702b41f2447951eb0df4daa025d7c@[2001:db8::42:2]:3901",
+  "889c377b4d48e8ef408570084a7f5606f64bb849344a267360bc8ae8f303f744@[2001:db8::42:3]:3901",
+  "14828fb0bddf1d85f827d69f72da48b73a6d74bb7fe66d237ac291332ede9465@[2001:db8::42:4]:3901",
+  # gateway peer (won't store anything)
+  "ce71713ed7fef07d0800b6a68111b8a76fde056c214f6cee241ec1cf7c387b9a@[2001:db8::43:2]:3901",
+]
+
+[s3_api]
+s3_region = "garage"
+# api_bind_addr = "[::]:3900"
+# root_domain = ".s3.emrio.fr"
+
+[admin]
+api_bind_addr = "[::]:3903"
